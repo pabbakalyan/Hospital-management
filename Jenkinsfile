@@ -51,7 +51,7 @@ pipeline {
                script{
                    withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
                     sh "docker build -t  hospital:latest -f docker/Dockerfile . "
-                    sh "docker tag hospital:latest pabbakalyan/hospital:latest "
+                    sh "docker tag hospital:latest dockerhub-repo/hospital:latest "
                  }
                }
             }
@@ -61,21 +61,21 @@ pipeline {
             steps {
                script{
                    withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
-                    sh "docker push  pabbakalyan/hospital:latest "
+                    sh "docker push  dockerhub-repo/hospital:latest "
                  }
                }
             }
         }
         stage('trivy') {
             steps {
-               sh " trivy pabbakalyan/hospital:latest"
+               sh " trivy dockerhub-repo/hospital:latest"
             }
         }
 		stage('Deploy to Docker') {
             steps {
                script{
                    withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
-                    sh "docker run -d --name to-do-app -p 4000:4000 pabbakalyan/hospital:latest "
+                    sh "docker run -d --name to-do-app -p 3000:3000 dockerhub-repo/hospital:latest "
                  }
                }
             }
