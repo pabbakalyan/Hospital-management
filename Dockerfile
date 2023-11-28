@@ -1,4 +1,5 @@
 FROM node:14-alpine3.12
 COPY . .
-EXPOSE 4000
+RUN npm install
+EXPOSE 3000
 CMD ["node","app.js"]
